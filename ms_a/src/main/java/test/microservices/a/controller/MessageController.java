@@ -20,7 +20,7 @@ public class MessageController {
 
     @RequestMapping(method= RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public Message direct(@RequestParam(value="port", required=false, defaultValue="8080") String port) {
+    public @ResponseBody Message direct(@RequestParam(value="port", required=false, defaultValue="8080") String port) {
         System.out.println("port: " + port);
         return messageService.direct(port,"A");
     }
@@ -44,5 +44,17 @@ public class MessageController {
     Message useLoadBalancer() {
         System.out.println("MessageController.useLoadBalancer -> Calling service layer");
         return messageService.useLoadBalancer("A");
+    }
+
+    @RequestMapping(method= RequestMethod.GET, value = "/test")
+    public @ResponseBody
+    Message test() {
+        System.out.println("MessageController.test");
+
+        Message message = new Message();
+        message.setId(100);
+        message.setContent("Test Method");
+
+        return message  ;
     }
 }
