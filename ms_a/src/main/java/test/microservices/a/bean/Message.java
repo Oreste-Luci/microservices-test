@@ -1,7 +1,7 @@
 package test.microservices.a.bean;
 
 /**
- * By Oreste Luci
+ * @author Oreste Luci
  */
 public class Message {
 

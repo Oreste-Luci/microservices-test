@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
- * Created by Oreste Luci on 22/04/2015.
+ * @author Oreste Luci
  */
 @Controller
 @RequestMapping("/message")

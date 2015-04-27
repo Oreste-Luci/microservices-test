@@ -3,6 +3,7 @@ package test.microservices.a.service;
 import com.netflix.appinfo.InstanceInfo;
 import com.netflix.discovery.DiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
+import org.springframework.stereotype.Component;
 import test.microservices.a.bean.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.cloud.client.discovery.DiscoveryClient;
@@ -13,9 +14,9 @@ import org.springframework.cloud.client.ServiceInstance;
 import java.net.URI;
 
 /**
- * By Oreste Luci
+ * @author Oreste Luci
  */
-@Service
+@Component
 public class MessageService {
 
     private static final String SERVICE_APP = "MICROSERVICES_TEST_APP_B";
@@ -74,13 +75,15 @@ public class MessageService {
 
         ServiceInstance instance = loadBalancer.choose(this.SERVICE_APP);
 
-        URI serviceURI = URI.create(String.format("http://%s:%s/%s%s", instance.getHost(), instance.getPort(),"message?name=",name));
+        URI serviceURI = instance.getUri();
 
-        System.out.println("callURI: " + serviceURI);
+        String url = serviceURI.toString() + "message?name=" + name;
+
+        System.out.println("callURI: " + url);
 
         RestTemplate restTemplate = new RestTemplate();
 
-        Message message = restTemplate.getForObject(serviceURI, Message.class);
+        Message message = restTemplate.getForObject(url, Message.class);
 
         return message;
     }

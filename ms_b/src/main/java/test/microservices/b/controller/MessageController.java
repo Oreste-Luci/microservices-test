@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import java.io.File;
 import java.util.concurrent.atomic.AtomicLong;
 
+/**
+ * @author Oreste Luci
+ */
 @RestController
 @RequestMapping(value = "/message")
 public class MessageController {

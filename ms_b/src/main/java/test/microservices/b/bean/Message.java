@@ -1,7 +1,7 @@
 package test.microservices.b.bean;
 
 /**
- * Created by Oreste Luci on 22/04/2015.
+ * @author Oreste Luci
  */
 public class Message {
 
