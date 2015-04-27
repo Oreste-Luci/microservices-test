@@ -30,6 +30,7 @@ public class MessageController {
         return new Message(counter.incrementAndGet(), name + " - B");
     }
 
+    /*
     @RequestMapping(value = "/largeContent", method = RequestMethod.GET)
     @ResponseBody
     public FileSystemResource largeContent() {
@@ -39,6 +40,6 @@ public class MessageController {
         File file = new File("C:\\Users\\Oluci\\Temp\\large_file.txt");
 
         return new FileSystemResource(file);
-        //return "Hola";
     }
+    */
 }

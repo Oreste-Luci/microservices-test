@@ -1,17 +1,15 @@
 package test.microservices.a.service;
 
 import com.netflix.appinfo.InstanceInfo;
-import com.netflix.discovery.DiscoveryClient;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.stereotype.Component;
-import test.microservices.a.bean.Message;
-import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.cloud.client.discovery.DiscoveryClient;
-import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.cloud.client.ServiceInstance;
+import test.microservices.a.bean.Message;
 
 import java.net.URI;
+import java.util.List;
 
 /**
  * @author Oreste Luci
@@ -22,18 +20,40 @@ public class MessageService {
     private static final String SERVICE_APP = "MICROSERVICES_TEST_APP_B";
 
     @Autowired
-    private DiscoveryClient discoveryClient;
+    private com.netflix.discovery.DiscoveryClient netFlixDiscoveryClient;
+
+    @Autowired
+    private org.springframework.cloud.client.discovery.DiscoveryClient springDiscoveryClient;
 
     @Autowired
     private LoadBalancerClient loadBalancer;
+
+    public Message direct(String port,String name) {
+
+        System.out.println("MessageService.direct: Sending to MS B: " + name);
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        String callURI = "http://localhost:" + port + "/message?name=" + name;
+
+        System.out.println("callURI: " + callURI);
+
+        Message message = restTemplate.getForObject(callURI, Message.class);
+
+        return message;
+    }
 
     public Message eurkaDirect(String name) {
 
         System.out.println("MessageService.eurkaDirect: Sending to MS B: " + name);
 
-        /*
-        List<ServiceInstance> messageServices = discoveryClient.getInstances(this.SERVICE_APP);
-        messageServices.forEach(System.out::println);
+        List<ServiceInstance> messageServices = springDiscoveryClient.getInstances(this.SERVICE_APP);
+
+        System.out.println("Instances obtained: " + messageServices.size());
+
+        for (ServiceInstance instance : messageServices) {
+            System.out.println(instance.getServiceId());
+        }
 
         ServiceInstance serviceInstance = messageServices.get(0);
 
@@ -46,17 +66,13 @@ public class MessageService {
         Message message = restTemplate.getForObject(callURI, Message.class);
 
         return message;
-        */
-
-        return null;
     }
-
 
     public Message eurekaNextServer(String name) {
 
         System.out.println("MessageService.eurekaNextServer: Sending to MS B: " + name);
 
-        InstanceInfo instance = discoveryClient.getNextServerFromEureka(this.SERVICE_APP, false);
+        InstanceInfo instance = netFlixDiscoveryClient.getNextServerFromEureka(this.SERVICE_APP, false);
 
         RestTemplate restTemplate = new RestTemplate();
 
