@@ -25,28 +25,28 @@ public class MessageController {
         return messageService.direct(port,"A");
     }
 
-    @RequestMapping(method= RequestMethod.GET, value = "/directEureka")
+    @RequestMapping(method= RequestMethod.GET, value = "/directEureka", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
     Message eurkaDirect() {
         System.out.println("MessageController.eurkaDirect -> Calling service layer");
         return messageService.eurkaDirect("A");
     }
 
-    @RequestMapping(method= RequestMethod.GET, value = "/eurekaNextServer")
+    @RequestMapping(method= RequestMethod.GET, value = "/eurekaNextServer", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
     Message eurekaNextServer() {
         System.out.println("MessageController.eurekaNextServer -> Calling service layer");
         return messageService.eurekaNextServer("A");
     }
 
-    @RequestMapping(method= RequestMethod.GET, value = "/loadBalancer")
+    @RequestMapping(method= RequestMethod.GET, value = "/loadBalancer", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
     Message useLoadBalancer() {
         System.out.println("MessageController.useLoadBalancer -> Calling service layer");
         return messageService.useLoadBalancer("A");
     }
 
-    @RequestMapping(method= RequestMethod.GET, value = "/test")
+    @RequestMapping(method= RequestMethod.GET, value = "/test", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
     Message test() {
         System.out.println("MessageController.test");
