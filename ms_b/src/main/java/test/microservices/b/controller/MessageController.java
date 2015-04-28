@@ -1,5 +1,6 @@
 package test.microservices.b.controller;
 
+import org.springframework.cloud.netflix.feign.FeignClient;
 import test.microservices.b.bean.Message;
 import test.microservices.b.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 @RestController
 @RequestMapping(value = "/message")
+@FeignClient("service-b")
 public class MessageController {
 
     @Autowired
@@ -23,7 +25,10 @@ public class MessageController {
 
     private final AtomicLong counter = new AtomicLong();
 
-    @RequestMapping(method= RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(
+            method= RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @ResponseStatus(HttpStatus.OK)
     public Message sayHello(@RequestParam(value="name", required=false, defaultValue="Stranger") String name) {
         System.out.println("name: " + name);

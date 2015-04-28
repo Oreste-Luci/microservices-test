@@ -27,6 +27,7 @@
                     <li class="list-group-item"><a href="/message/directEureka">Get MS B List Directly from Eureka</a></li>
                     <li class="list-group-item"><a href="/message/eurekaNextServer">Get MS B Next Server from Eureka</a></li>
                     <li class="list-group-item"><a href="/message/loadBalancer">Get MS B From Load Balancer (Ribbon)</a></li>
+                    <li class="list-group-item"><a href="/message/feign">Get MS B From Feign</a></li>
                     <li class="list-group-item">
                         <form class="form-inline" role="form" action="/message" method="get">
                             <div class="form-group">
