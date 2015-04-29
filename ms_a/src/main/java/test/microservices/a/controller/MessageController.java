@@ -1,5 +1,6 @@
 package test.microservices.a.controller;
 
+import org.springframework.cloud.netflix.feign.EnableFeignClients;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;

@@ -1,9 +1,6 @@
 package test.microservices.a.service;
 
 import com.netflix.appinfo.InstanceInfo;
-import feign.Feign;
-import feign.ribbon.RibbonClient;
-import feign.ribbon.RibbonModule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
@@ -25,9 +22,10 @@ import java.util.List;
  */
 @Component
 @Service
+@EnableFeignClients
 public class MessageService {
 
-    private static final String SERVICE_APP = "Microservices_Test_App_B";
+    private static final String SERVICE_APP = "MS-TEST-B";
 
     @Autowired
     MicroserviceB microserviceB;
@@ -119,12 +117,12 @@ public class MessageService {
 
     public Message feign(String name) {
         System.out.println("MessageService.feign: Sending to MS B: " + name);
-        return microserviceB.sayHello(name);
+        return microserviceB.getMessage(name);
     }
 
     @FeignClient(value = MessageService.SERVICE_APP)
-    interface MicroserviceB {
+    public interface MicroserviceB {
         @RequestMapping(value = "/message?name={name}", method = RequestMethod.GET)
-        Message sayHello(@PathVariable(value = "name") String name);
+        Message getMessage(@PathVariable(value = "name") String name);
     }
 }

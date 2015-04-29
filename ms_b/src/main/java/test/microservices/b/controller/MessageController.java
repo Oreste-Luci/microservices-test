@@ -17,7 +17,6 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 @RestController
 @RequestMapping(value = "/message")
-@FeignClient("service-b")
 public class MessageController {
 
     @Autowired
