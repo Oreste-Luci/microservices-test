@@ -1,6 +1,6 @@
 spring:
   application:
-    name: eureka-server
+    name: test-eureka-server
 
 server:
   port: 8761
@@ -9,9 +9,24 @@ eureka:
   client:
     registerWithEureka: false
     fetchRegistry: false
+  instance:
+    leaseRenewalIntervalInSeconds: 10
   server:
     waitTimeInMsWhenSyncEmpty: 0
-  
+  enableSelfPreservation: false
+
+endpoints:
+  restart:
+    enabled: true
+  shutdown:
+    enabled: true
+  health:
+    sensitive: false
+    
+cloud:
+  config:
+    uri: ${vcap.services.${PREFIX:}configserver.credentials.uri:http://user:password@localhost:8888}
+
 logging:
   level:
     com.netflix: 'WARN'

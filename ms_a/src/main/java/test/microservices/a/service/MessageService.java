@@ -122,7 +122,11 @@ public class MessageService {
 
     @FeignClient(value = MessageService.SERVICE_APP)
     public interface MicroserviceB {
+
         @RequestMapping(value = "/message?name={name}", method = RequestMethod.GET)
         Message getMessage(@PathVariable(value = "name") String name);
+
+        @RequestMapping(value = "/longMessage?lines={lines}", method = RequestMethod.GET)
+        Message getLongMessage(@PathVariable(value = "lines") Integer lines);
     }
 }

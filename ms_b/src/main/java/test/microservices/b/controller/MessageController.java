@@ -29,10 +29,22 @@ public class MessageController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ResponseStatus(HttpStatus.OK)
-    public Message sayHello(@RequestParam(value="name", required=false, defaultValue="Stranger") String name) {
+    public Message simpleMessage(@RequestParam(value="name", required=false, defaultValue="Stranger") String name) {
         System.out.println("name: " + name);
         return new Message(counter.incrementAndGet(), name + " - B");
     }
+
+    @RequestMapping(
+            method= RequestMethod.GET,
+            value = "/longMessage",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @ResponseStatus(HttpStatus.OK)
+    public Message longMessage(@RequestParam(value="lines", required=false, defaultValue="1000") String lines) {
+        System.out.println("lines: " + lines);
+        return new Message(counter.incrementAndGet(), lines + " - B");
+    }
+
 
     /*
     @RequestMapping(value = "/largeContent", method = RequestMethod.GET)
