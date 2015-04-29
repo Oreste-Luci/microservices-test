@@ -1,38 +1,45 @@
 package test.microservices.b.controller;
 
-import org.springframework.cloud.netflix.feign.FeignClient;
 import test.microservices.b.bean.Message;
-import test.microservices.b.service.FileService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.File;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * @author Oreste Luci
  */
 @RestController
-@RequestMapping(value = "/message")
+@RequestMapping(value = "/ms-b")
 public class MessageController {
 
-    @Autowired
-    FileService fileService;
-
     private final AtomicLong counter = new AtomicLong();
+
 
     @RequestMapping(
             method= RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ResponseStatus(HttpStatus.OK)
-    public Message simpleMessage(@RequestParam(value="name", required=false, defaultValue="Stranger") String name) {
-        System.out.println("name: " + name);
-        return new Message(counter.incrementAndGet(), name + " - B");
+    public Message simpleMessage(@RequestParam(value="lines", required=false, defaultValue="Stranger") String lines) {
+        System.out.println("MessageController.simpleMessage(" + lines + ")");
+        System.out.println("lines: " + lines);
+
+        int count = Integer.parseInt(lines);
+
+        StringBuffer content = new StringBuffer();
+
+        String text = UUID.randomUUID().toString();
+
+        for (int i=0;i<count;i++) {
+            content.append(i+1).append(". ").append(text).append("\n");
+        }
+
+        return new Message(counter.incrementAndGet(), content.toString());
     }
+
 
     @RequestMapping(
             method= RequestMethod.GET,
@@ -41,21 +48,19 @@ public class MessageController {
     )
     @ResponseStatus(HttpStatus.OK)
     public Message longMessage(@RequestParam(value="lines", required=false, defaultValue="1000") String lines) {
+        System.out.println("MessageController.longMessage(" + lines + ")");
         System.out.println("lines: " + lines);
-        return new Message(counter.incrementAndGet(), lines + " - B");
+
+        int count = Integer.parseInt(lines);
+
+        StringBuffer content = new StringBuffer();
+
+        String text = UUID.randomUUID().toString();
+
+        for (int i=0;i<count;i++) {
+            content.append(i+1).append(". ").append(text).append("\n");
+        }
+
+        return new Message(counter.incrementAndGet(), content.toString());
     }
-
-
-    /*
-    @RequestMapping(value = "/largeContent", method = RequestMethod.GET)
-    @ResponseBody
-    public FileSystemResource largeContent() {
-
-        System.out.println("MessageController.largeContent");
-
-        File file = new File("C:\\Users\\Oluci\\Temp\\large_file.txt");
-
-        return new FileSystemResource(file);
-    }
-    */
 }

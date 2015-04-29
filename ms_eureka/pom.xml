@@ -15,6 +15,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring-cloud.version>1.0.0.RELEASE</spring-cloud.version>
         <spring-boot.version>1.2.3.RELEASE</spring-boot.version>
+        <start-class>test.microservices.eureka.boot.EurekaServerApp</start-class>
+        <java.version>1.8</java.version>
     </properties>
 
     <dependencyManagement>
@@ -33,10 +35,9 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-eureka-server</artifactId>
-            <version>1.0.0.RELEASE</version>
+            <version>${spring-cloud.version}</version>
         </dependency>
     </dependencies>
-
 
     <build>
         <plugins>
@@ -67,6 +68,7 @@
         </plugins>
     </build>
 
+    <!--
     <repositories>
         <repository>
             <id>spring-milestones</id>
@@ -77,5 +79,6 @@
             </snapshots>
         </repository>
     </repositories>
+    -->
 
 </project>

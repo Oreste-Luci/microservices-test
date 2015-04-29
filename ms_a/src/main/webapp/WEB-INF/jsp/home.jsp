@@ -21,18 +21,48 @@
 
             <div class="panel panel-default">
                 <!-- Default panel contents -->
-                <div class="panel-heading">Available URLs</div>
+                <div class="panel-heading">Available Endpoints</div>
                 <ul class="list-group">
-                    <li class="list-group-item"><a href="/message/test">Microservice A Test Method</a></li>
-                    <li class="list-group-item"><a href="/message/directEureka">Get MS B List Directly from Eureka</a></li>
-                    <li class="list-group-item"><a href="/message/eurekaNextServer">Get MS B Next Server from Eureka</a></li>
-                    <li class="list-group-item"><a href="/message/loadBalancer">Get MS B From Load Balancer (Ribbon)</a></li>
-                    <li class="list-group-item"><a href="/message/feign">Get MS B From Feign</a></li>
+                    <li class="list-group-item"><a href="/ms-a/test">Microservice A Test Method</a> (/ms-a/test)</li>
+                    <li class="list-group-item"><a href="/ms-a/directEureka">Get MS B List Directly from Eureka</a> (/ms-a/directEureka)</li>
+                    <li class="list-group-item"><a href="/ms-a/loadBalancer">Get MS B From Load Balancer (Ribbon)</a> (/ms-a/loadBalancer)</li>
+                    <li class="list-group-item"><a href="/ms-a/feign">Get MS B From Feign</a> (/ms-a/feign)</li>
                     <li class="list-group-item">
-                        <form class="form-inline" role="form" action="/message" method="get">
+                        <form class="form-inline" role="form" action="/ms-a/direct" method="get">
                             <div class="form-group">
-                                <label for="port">Direct Call to MS B:</label>
+                                <label for="server">Direct Call to MS B: (/ms-a/direct)</label>
+                                <input type="text" name="server" class="form-control" id="server" placeholder="Enter server name">
                                 <input type="text" name="port" class="form-control" id="port" placeholder="Enter Port Number">
+                            </div>
+                            <button type="submit" class="btn btn-default">Submit</button>
+                        </form>
+                    </li>
+                    <li class="list-group-item">
+                        <form class="form-inline" role="form" action="/ms-a/eurekaNextServer" method="get">
+                            <div class="form-group">
+                                <label for="calls0">Get MS B Next Server from Eureka: (/ms-a/eurekaNextServer)</label>
+                                <input type="text" name="calls" class="form-control" id="calls0" placeholder="Enter amount of calls to B">
+                                <input type="text" name="lines" class="form-control" id="eurekaNextServer" placeholder="Enter amount of lines">
+                            </div>
+                            <button type="submit" class="btn btn-default">Submit</button>
+                        </form>
+                    </li>
+                    <li class="list-group-item">
+                        <form class="form-inline" role="form" action="/ms-a/longMessageFeign" method="get">
+                            <div class="form-group">
+                                <label for="calls1">Long Message Call to MS B (Feign): (/ms-a/longMessageFeign)</label>
+                                <input type="text" name="calls" class="form-control" id="calls1" placeholder="Enter amount of calls to B">
+                                <input type="text" name="lines" class="form-control" id="longMessage" placeholder="Enter amount of lines">
+                            </div>
+                            <button type="submit" class="btn btn-default">Submit</button>
+                        </form>
+                    </li>
+                    <li class="list-group-item">
+                        <form class="form-inline" role="form" action="/ms-a/longMessageBalancer" method="get">
+                            <div class="form-group">
+                                <label for="calls2">Long Message Call to MS B (Ribbon): (/ms-a/longMessageBalancer)</label>
+                                <input type="text" name="calls" class="form-control" id="calls2" placeholder="Enter amount of calls to B">
+                                <input type="text" name="lines" class="form-control" id="longMessageBalancer" placeholder="Enter amount of lines">
                             </div>
                             <button type="submit" class="btn btn-default">Submit</button>
                         </form>

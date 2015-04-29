@@ -26,6 +26,7 @@ import java.util.List;
 public class MessageService {
 
     private static final String SERVICE_APP = "MS-TEST-B";
+    private static final String SERVICE_B_PATH = "ms-b";
 
     @Autowired
     MicroserviceB microserviceB;
@@ -39,13 +40,14 @@ public class MessageService {
     @Autowired
     private LoadBalancerClient loadBalancer;
 
-    public Message direct(String port,String name) {
+
+    public Message direct(String server, String port,String name) {
 
         System.out.println("MessageService.direct: Sending to MS B: " + name);
 
         RestTemplate restTemplate = new RestTemplate();
 
-        String callURI = "http://localhost:" + port + "/message?name=" + name;
+        String callURI = "http://" + server + ":" + port + "/" + MessageService.SERVICE_B_PATH + "?name=" + name;
 
         System.out.println("callURI: " + callURI);
 
@@ -53,6 +55,7 @@ public class MessageService {
 
         return message;
     }
+
 
     public Message eurkaDirect(String name) {
 
@@ -70,7 +73,7 @@ public class MessageService {
 
         RestTemplate restTemplate = new RestTemplate();
 
-        String callURI = "http://" + serviceInstance.getHost() + ":" + serviceInstance.getPort() + "/message?name=" + name;
+        String callURI = "http://" + serviceInstance.getHost() + ":" + serviceInstance.getPort() + "/" + MessageService.SERVICE_B_PATH + "?name=" + name;
 
         System.out.println("callURI: " + callURI);
 
@@ -79,15 +82,16 @@ public class MessageService {
         return message;
     }
 
-    public Message eurekaNextServer(String name) {
 
-        System.out.println("MessageService.eurekaNextServer: Sending to MS B: " + name);
+    public Message eurekaNextServer(String lines) {
+
+        System.out.println("MessageService.eurekaNextServer: Sending to MS B: " + lines);
 
         InstanceInfo instance = netFlixDiscoveryClient.getNextServerFromEureka(MessageService.SERVICE_APP, false);
 
         RestTemplate restTemplate = new RestTemplate();
 
-        String callURI = instance.getHomePageUrl() + "/message?name=" + name;
+        String callURI = instance.getHomePageUrl() + "/" + MessageService.SERVICE_B_PATH + "?lines=" + lines;
 
         System.out.println("callURI: " + callURI);
 
@@ -95,6 +99,7 @@ public class MessageService {
 
         return message;
     }
+
 
     public Message useLoadBalancer(String name) {
 
@@ -104,7 +109,7 @@ public class MessageService {
 
         URI serviceURI = instance.getUri();
 
-        String url = serviceURI.toString() + "message?name=" + name;
+        String url = serviceURI.toString() + MessageService.SERVICE_B_PATH + "?name=" + name;
 
         System.out.println("callURI: " + url);
 
@@ -115,18 +120,45 @@ public class MessageService {
         return message;
     }
 
+    public Message longMessageBalancer(String lines) {
+
+        System.out.println("MessageService.longMessageBalancer(" + lines + ")");
+
+        ServiceInstance instance = loadBalancer.choose(MessageService.SERVICE_APP);
+
+        URI serviceURI = instance.getUri();
+
+        StringBuilder url = new StringBuilder(serviceURI.toString()).append(MessageService.SERVICE_B_PATH).append("/longMessage?lines=").append(lines);
+        //String url = serviceURI.toString() + MessageService.SERVICE_B_PATH + "/longMessage?lines=" + lines;
+
+        System.out.println("callURI: " + url.toString());
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        Message message = restTemplate.getForObject(url.toString(), Message.class);
+
+        return message;
+    }
+
     public Message feign(String name) {
         System.out.println("MessageService.feign: Sending to MS B: " + name);
         return microserviceB.getMessage(name);
     }
 
+
+    public Message longMessageFeign(String lines) {
+        System.out.println("MessageService.longMessageFeign: Sending to MS B: " + lines);
+        return microserviceB.getLongMessage(lines);
+    }
+
+
     @FeignClient(value = MessageService.SERVICE_APP)
     public interface MicroserviceB {
 
-        @RequestMapping(value = "/message?name={name}", method = RequestMethod.GET)
+        @RequestMapping(value = "/" + MessageService.SERVICE_B_PATH + "?name={name}", method = RequestMethod.GET)
         Message getMessage(@PathVariable(value = "name") String name);
 
-        @RequestMapping(value = "/longMessage?lines={lines}", method = RequestMethod.GET)
-        Message getLongMessage(@PathVariable(value = "lines") Integer lines);
+        @RequestMapping(value = "/" + MessageService.SERVICE_B_PATH + "/longMessage?lines={lines}", method = RequestMethod.GET)
+        Message getLongMessage(@PathVariable(value = "lines") String lines);
     }
 }

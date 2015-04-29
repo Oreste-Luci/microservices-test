@@ -6,28 +6,20 @@ server:
   port: 8761
 
 eureka:
-  client:
-    registerWithEureka: false
-    fetchRegistry: false
   instance:
-    leaseRenewalIntervalInSeconds: 10
-  server:
-    waitTimeInMsWhenSyncEmpty: 0
-  enableSelfPreservation: false
+    hostname: localhost
+    serviceUrl:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
 
-endpoints:
-  restart:
-    enabled: true
-  shutdown:
-    enabled: true
-  health:
-    sensitive: false
-    
-cloud:
-  config:
-    uri: ${vcap.services.${PREFIX:}configserver.credentials.uri:http://user:password@localhost:8888}
 
-logging:
-  level:
-    com.netflix: 'WARN'
-    org.springframework.cloud: 'WARN'
+#eureka:
+#  client:
+#    registerWithEureka: false
+#    fetchRegistry: false
+#    server:
+#      waitTimeInMsWhenSyncEmpty: 0
+#    password: 123
+
+#cloud:
+#  config:
+#    uri: ${vcap.services.${PREFIX:}configserver.credentials.uri:http://user:password@localhost:8888}

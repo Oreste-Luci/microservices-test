@@ -6,6 +6,7 @@ package test.microservices.a.bean;
 public class Message {
 
     private long id;
+    private long timeTaken;
     private String content;
 
     public long getId() {
@@ -22,5 +23,13 @@ public class Message {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public long getTimeTaken() {
+        return timeTaken;
+    }
+
+    public void setTimeTaken(long timeTaken) {
+        this.timeTaken = timeTaken;
     }
 }
