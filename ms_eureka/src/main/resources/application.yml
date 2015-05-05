@@ -5,12 +5,26 @@ spring:
 server:
   port: 8761
 
-eureka:
-  instance:
-    hostname: localhost
-    serviceUrl:
-      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+#eureka:
+#  instance:
+#    hostname: localhost
+#    serviceUrl:
+#      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
 
+eureka:
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+  server:
+    waitTimeInMsWhenSyncEmpty: 0
+  instance:
+    preferIpAddress: true
+
+
+logging:
+  level:
+    com.netflix: 'WARN'
+    org.springframework.cloud: 'WARN'
 
 #eureka:
 #  client:
