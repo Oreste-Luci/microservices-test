@@ -39,6 +39,7 @@ public class MessageController {
             value = "/directEureka",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
+    @ResponseStatus(HttpStatus.OK)
     public @ResponseBody
     Message eurkaDirect() {
         System.out.println("MessageController.eurkaDirect -> Calling service layer");
@@ -52,6 +53,7 @@ public class MessageController {
             value = "/eurekaNextServer",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
+    @ResponseStatus(HttpStatus.OK)
     public @ResponseBody
     Meassure eurekaNextServer(@RequestParam(value="calls", required=false, defaultValue="100") Integer calls,
                               @RequestParam(value="lines", required=false, defaultValue="1000") Integer lines) {
@@ -90,6 +92,7 @@ public class MessageController {
             value = "/loadBalancer",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
+    @ResponseStatus(HttpStatus.OK)
     public @ResponseBody
     Message useLoadBalancer() {
         System.out.println("MessageController.useLoadBalancer -> Calling service layer");
@@ -102,6 +105,7 @@ public class MessageController {
             value = "/feign",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
+    @ResponseStatus(HttpStatus.OK)
     public @ResponseBody Message feign() {
         System.out.println("MessageController.feign");
         return messageService.feign("A");
@@ -113,6 +117,7 @@ public class MessageController {
             value = "/longMessageFeign",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
+    @ResponseStatus(HttpStatus.OK)
     public @ResponseBody
     Meassure longMessageFeign(@RequestParam(value="calls", required=false, defaultValue="100") Integer calls,
                               @RequestParam(value="lines", required=false, defaultValue="1000") Integer lines) {
@@ -151,6 +156,7 @@ public class MessageController {
             value = "/longMessageBalancer",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
+    @ResponseStatus(HttpStatus.OK)
     public @ResponseBody
     Meassure longMessageBalancer(@RequestParam(value="calls", required=false, defaultValue="100") Integer calls,
                                        @RequestParam(value="lines", required=false, defaultValue="1000") Integer lines) {
@@ -190,6 +196,7 @@ public class MessageController {
             value = "/test",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
+    @ResponseStatus(HttpStatus.OK)
     public @ResponseBody Message test() {
         System.out.println("MessageController.test");
 
