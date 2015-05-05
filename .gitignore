@@ -2,3 +2,5 @@ ms_a/target/
 ms_b/target/
 ms_eureka/target/
 *.iml
+*.idea
+*~

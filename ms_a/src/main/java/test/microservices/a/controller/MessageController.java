@@ -4,7 +4,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import test.microservices.a.bean.Meassure;
+import test.microservices.a.bean.MeassureGroup;
 import test.microservices.a.bean.Message;
+import test.microservices.a.bean.MessageMetric;
 import test.microservices.a.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -189,6 +191,56 @@ public class MessageController {
 
         return meassure;
     }
+
+
+    @RequestMapping(
+            method= RequestMethod.GET,
+            value = "/longMessageTransferFeign",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @ResponseStatus(HttpStatus.OK)
+    public @ResponseBody
+    MeassureGroup longMessageTransferFeign(@RequestParam(value="calls", required=false, defaultValue="100") Integer calls,
+                              @RequestParam(value="lines", required=false, defaultValue="1000") Integer lines) {
+
+        System.out.println("MessageController.longMessageTransferFeign(" + calls + "," + lines + ")");
+
+        MeassureGroup meassureGroup = new MeassureGroup();
+        meassureGroup.setCalls(calls);
+        meassureGroup.setLines(lines);
+
+        String libesStr = "" + lines;
+
+        BigInteger sum = BigInteger.ZERO;
+        long start,time;
+        for (int i=0;i<calls.intValue();i++) {
+
+            start = System.nanoTime();
+            MessageMetric messageMetric = messageService.longMessageTransferFeign(libesStr);
+            time = System.nanoTime() - start - messageMetric.getGeneratingTime() ;
+
+            meassureGroup.setAvgTimeTaken(time);
+            sum = sum.add(new BigInteger("" + time));
+            if( meassureGroup.getMinTimeTaken() > time)
+            {
+                meassureGroup.setMinTimeTaken(time);
+            }
+
+            if( meassureGroup.getMaxTimeTaken() < time)
+            {
+                meassureGroup.setMaxTimeTaken(time);
+            }
+        }
+
+        sum = sum.divide(new BigInteger(""+calls.intValue()));
+
+        meassureGroup.setAvgTimeTaken(sum.longValue());
+
+
+
+        return meassureGroup;
+    }
+
 
 
     @RequestMapping(

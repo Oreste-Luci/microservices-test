@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.client.RestTemplate;
 import test.microservices.a.bean.Message;
+import test.microservices.a.bean.MessageMetric;
 
 import java.net.URI;
 import java.util.List;
@@ -151,6 +152,11 @@ public class MessageService {
         return microserviceB.getLongMessage(lines);
     }
 
+    public MessageMetric longMessageTransferFeign(String lines) {
+        System.out.println("MessageService.longMessageTransferFeign: Sending to MS B: " + lines);
+        return microserviceB.getMessageMetric(lines);
+    }
+
 
     @FeignClient(value = MessageService.SERVICE_APP)
     public interface MicroserviceB {
@@ -160,5 +166,8 @@ public class MessageService {
 
         @RequestMapping(value = "/" + MessageService.SERVICE_B_PATH + "/longMessage?lines={lines}", method = RequestMethod.GET)
         Message getLongMessage(@PathVariable(value = "lines") String lines);
+
+        @RequestMapping(value = "/" + MessageService.SERVICE_B_PATH + "/longMetricMessage?lines={lines}", method = RequestMethod.GET)
+        MessageMetric getMessageMetric(@PathVariable(value = "lines") String lines);
     }
 }

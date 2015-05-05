@@ -67,6 +67,18 @@
                             <button type="submit" class="btn btn-default">Submit</button>
                         </form>
                     </li>
+
+                    <li class="list-group-item">
+                        <form class="form-inline" role="form" action="/ms-a/longMessageTransferFeign" method="get">
+                            <div class="form-group">
+                                <label for="calls2">Long Message(tranfer time) Call to MS B (Ribbon): (/ms-a/longMessageTransferFeign)</label>
+                                <input type="text" name="calls" class="form-control" id="calls3" placeholder="Enter amount of calls to B">
+                                <input type="text" name="lines" class="form-control" id="longMessageBalancer2" placeholder="Enter amount of lines">
+                            </div>
+                            <button type="submit" class="btn btn-default">Submit</button>
+                        </form>
+                    </li>
+
                 </ul>
             </div>
 
