@@ -12,10 +12,15 @@ server:
 #      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
 
 eureka:
+ server:
+
+
+
   client:
     registerWithEureka: false
     fetchRegistry: false
   server:
+    enableSelfPreservation: false
     waitTimeInMsWhenSyncEmpty: 0
   instance:
     preferIpAddress: true
