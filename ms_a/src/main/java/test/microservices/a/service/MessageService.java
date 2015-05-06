@@ -42,13 +42,13 @@ public class MessageService {
     private LoadBalancerClient loadBalancer;
 
 
-    public Message direct(String server, String port,String name) {
+    public Message direct(String server, String port,String lines) {
 
-        System.out.println("MessageService.direct: Sending to MS B: " + name);
+        System.out.println("MessageService.direct: Sending to MS B: " + lines);
 
         RestTemplate restTemplate = new RestTemplate();
 
-        String callURI = "http://" + server + ":" + port + "/" + MessageService.SERVICE_B_PATH + "?name=" + name;
+        String callURI = "http://" + server + ":" + port + "/" + MessageService.SERVICE_B_PATH + "?lines=" + lines;
 
         System.out.println("callURI: " + callURI);
 
@@ -58,9 +58,9 @@ public class MessageService {
     }
 
 
-    public Message eurkaDirect(String name) {
+    public Message eurkaDirect(String lines) {
 
-        System.out.println("MessageService.eurkaDirect: Sending to MS B: " + name);
+        System.out.println("MessageService.eurkaDirect: Sending to MS B: " + lines);
 
         List<ServiceInstance> messageServices = springDiscoveryClient.getInstances(MessageService.SERVICE_APP);
 
@@ -74,7 +74,7 @@ public class MessageService {
 
         RestTemplate restTemplate = new RestTemplate();
 
-        String callURI = "http://" + serviceInstance.getHost() + ":" + serviceInstance.getPort() + "/" + MessageService.SERVICE_B_PATH + "?name=" + name;
+        String callURI = "http://" + serviceInstance.getHost() + ":" + serviceInstance.getPort() + "/" + MessageService.SERVICE_B_PATH + "?lines=" + lines;
 
         System.out.println("callURI: " + callURI);
 
@@ -102,15 +102,15 @@ public class MessageService {
     }
 
 
-    public Message useLoadBalancer(String name) {
+    public Message useLoadBalancer(String lines) {
 
-        System.out.println("MessageService.useLoadBalancer: Sending to MS B: " + name);
+        System.out.println("MessageService.useLoadBalancer: Sending to MS B: " + lines);
 
         ServiceInstance instance = loadBalancer.choose(MessageService.SERVICE_APP);
 
         URI serviceURI = instance.getUri();
 
-        String url = serviceURI.toString() + MessageService.SERVICE_B_PATH + "?name=" + name;
+        String url = serviceURI.toString() + MessageService.SERVICE_B_PATH + "?name=" + lines;
 
         System.out.println("callURI: " + url);
 
@@ -141,9 +141,9 @@ public class MessageService {
         return message;
     }
 
-    public Message feign(String name) {
-        System.out.println("MessageService.feign: Sending to MS B: " + name);
-        return microserviceB.getMessage(name);
+    public Message feign(String lines) {
+        System.out.println("MessageService.feign: Sending to MS B: " + lines);
+        return microserviceB.getMessage(lines);
     }
 
 

@@ -32,7 +32,7 @@ public class MessageController {
     public @ResponseBody Message direct(@RequestParam(value="server", required=false, defaultValue="localhost") String server,
                                         @RequestParam(value="port", required=false, defaultValue="8080") String port) {
         System.out.println("MessageController.direct(" + port + ")");
-        return messageService.direct(server, port, "A");
+        return messageService.direct(server, port, "1");
     }
 
 
@@ -45,7 +45,7 @@ public class MessageController {
     public @ResponseBody
     Message eurkaDirect() {
         System.out.println("MessageController.eurkaDirect -> Calling service layer");
-        return messageService.eurkaDirect("A");
+        return messageService.eurkaDirect("1");
     }
 
 
@@ -98,7 +98,7 @@ public class MessageController {
     public @ResponseBody
     Message useLoadBalancer() {
         System.out.println("MessageController.useLoadBalancer -> Calling service layer");
-        return messageService.useLoadBalancer("A");
+        return messageService.useLoadBalancer("1");
     }
 
 
@@ -110,7 +110,7 @@ public class MessageController {
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody Message feign() {
         System.out.println("MessageController.feign");
-        return messageService.feign("A");
+        return messageService.feign("1");
     }
 
 
@@ -235,8 +235,6 @@ public class MessageController {
         sum = sum.divide(new BigInteger(""+calls.intValue()));
 
         meassureGroup.setAvgTimeTaken(sum.longValue());
-
-
 
         return meassureGroup;
     }

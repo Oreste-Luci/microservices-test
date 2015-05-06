@@ -24,7 +24,7 @@ public class MessageController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ResponseStatus(HttpStatus.OK)
-    public Message simpleMessage(@RequestParam(value="lines", required=false, defaultValue="Stranger") String lines) {
+    public Message simpleMessage(@RequestParam(value="lines", required=false, defaultValue="1") String lines) {
         System.out.println("MessageController.simpleMessage(" + lines + ")");
         System.out.println("lines: " + lines);
 

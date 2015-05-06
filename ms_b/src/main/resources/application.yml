@@ -1,0 +1,40 @@
+#
+# Use valid URI characters (eg: do not use _ in names)
+#
+spring:
+  application:
+    name: MS-TEST-B
+  profiles:
+    active: native
+
+server:
+  port: 0
+
+eureka:
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://10.1.7.210:8761/eureka/
+  instance:
+    leaseRenewalIntervalInSeconds: 10
+    preferIpAddress: true
+    metadataMap:
+      hostname: ${vcap.application.application_uris[0]}
+      instanceId: ${vcap.application.instance_id:${spring.application.name}:${spring.application.instance_id:${random.value}}}
+
+---
+spring:
+  profiles: aws
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://10.1.7.210:8761/eureka/
+
+---
+spring:
+  profiles: local
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
