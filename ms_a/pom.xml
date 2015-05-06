@@ -8,6 +8,7 @@
     <groupId>test.microservices</groupId>
     <artifactId>mstest_a</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>war</packaging>
 
     <name>microservice-a</name>
     <description>Demo microservice A</description>

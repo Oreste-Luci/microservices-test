@@ -1,11 +1,14 @@
 #
-# Use valid URI characters (eg: dont use _ in names)
+# Use valid URI characters (eg: do not use _ in names)
 #
 spring:
   application:
     name: MS-TEST-A
   profiles:
     active: native
+#  view:
+#    prefix: /WEB-INF/jsp/
+#    suffix: .jsp
 
 server:
   port: 0
