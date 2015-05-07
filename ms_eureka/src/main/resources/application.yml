@@ -5,17 +5,7 @@ spring:
 server:
   port: 8761
 
-#eureka:
-#  instance:
-#    hostname: localhost
-#    serviceUrl:
-#      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
-
 eureka:
- server:
-
-
-
   client:
     registerWithEureka: false
     fetchRegistry: false
@@ -25,20 +15,7 @@ eureka:
   instance:
     preferIpAddress: true
 
-
 logging:
   level:
     com.netflix: 'WARN'
     org.springframework.cloud: 'WARN'
-
-#eureka:
-#  client:
-#    registerWithEureka: false
-#    fetchRegistry: false
-#    server:
-#      waitTimeInMsWhenSyncEmpty: 0
-#    password: 123
-
-#cloud:
-#  config:
-#    uri: ${vcap.services.${PREFIX:}configserver.credentials.uri:http://user:password@localhost:8888}
