@@ -26,7 +26,7 @@ public class MessageController {
 
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public String home() {
+    public String clientmetrics() {
         return "clientmetrics";
     }
 

@@ -4,27 +4,10 @@ package test.microservices.a.bean;
  * Created by olivernoguera on 05/05/2015.
  */
 public class MeassureGroup {
-    private long calls;
-    private long lines;
+
     private long avgTimeTaken;
-    private long minTimeTaken = 10000000000L;
-    private long maxTimeTaken = 0L;
-
-    public long getCalls() {
-        return calls;
-    }
-
-    public void setCalls(long calls) {
-        this.calls = calls;
-    }
-
-    public long getLines() {
-        return lines;
-    }
-
-    public void setLines(long lines) {
-        this.lines = lines;
-    }
+    private long minTimeTaken = Long.MAX_VALUE;
+    private long maxTimeTaken = Long.MIN_VALUE;
 
     public long getAvgTimeTaken() {
         return avgTimeTaken;
@@ -64,13 +47,10 @@ public class MeassureGroup {
         }
     }
 
-
     @Override
     public String toString() {
         return "MeassureGroup{" +
-                "calls=" + calls +
-                ", lines=" + lines +
-                ", avgTimeTaken=" + avgTimeTaken +
+                " avgTimeTaken=" + avgTimeTaken +
                 ", minTimeTaken=" + minTimeTaken +
                 ", maxTimeTaken=" + maxTimeTaken +
                 '}';

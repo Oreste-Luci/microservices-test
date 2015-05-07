@@ -23,7 +23,7 @@
                 <!-- Default panel contents -->
                 <div class="panel-heading">Available Endpoints</div>
                 <ul class="list-group">
-                    <li class="list-group-item"><a href="/home.jsp">Home page</a></li>
+                    <li class="list-group-item"><a href="/home">Home page</a></li>
                     <li class="list-group-item"><a href="/clientmetrics">Client Metrics</a></li>
                     <li class="list-group-item">
 

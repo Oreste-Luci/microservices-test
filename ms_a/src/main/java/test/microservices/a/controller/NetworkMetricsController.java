@@ -6,6 +6,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import test.microservices.a.bean.MeassureGroup;
+import test.microservices.a.bean.MeassureGroups;
 import test.microservices.a.bean.MessageMetric;
 import test.microservices.a.service.MessageService;
 
@@ -24,7 +25,7 @@ public class NetworkMetricsController {
 
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public String home() {
+    public String networkmetrics() {
         return "networkmetrics";
     }
 
@@ -35,38 +36,38 @@ public class NetworkMetricsController {
     )
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody
-    MeassureGroup longMessageTransferFeign(@RequestParam(value="calls", required=false, defaultValue="100") Integer calls,
+    MeassureGroups longMessageTransferFeign(@RequestParam(value="calls", required=false, defaultValue="100") Integer calls,
                                            @RequestParam(value="lines", required=false, defaultValue="1000") Integer lines) {
+        MeassureGroups meassureGroups = new MeassureGroups(calls,lines);
 
-        System.out.println("MessageController.longMessageTransferFeign(" + calls + "," + lines + ")");
+        MeassureGroup networkMeassure = new MeassureGroup();
+        MeassureGroup generationMeassure = new MeassureGroup();
 
-        MeassureGroup meassureGroup = new MeassureGroup();
-        meassureGroup.setCalls(calls);
-        meassureGroup.setLines(lines);
-        MeassureGroup test = new MeassureGroup();
         String libesStr = "" + lines;
-
-        BigInteger sum = BigInteger.ZERO;
+        BigInteger sumNetwork = BigInteger.ZERO;
         BigInteger sumTest = BigInteger.ZERO;
         long start,time;
-        for (int i=0;i<calls.intValue();i++) {
+
+        for (int i = 0 ; i< calls.intValue() ; i++) {
 
             start = System.nanoTime();
             MessageMetric messageMetric = messageService.longMessageTransferFeign(libesStr);
             time = System.nanoTime() - start - messageMetric.getGeneratingTime() ;
 
-
+            networkMeassure.addTimeMinMax(time);
+            generationMeassure.addTimeMinMax( messageMetric.getGeneratingTime());
+            sumNetwork = sumNetwork.add(new BigInteger("" + time));
             sumTest = sumTest.add(new BigInteger("" +  messageMetric.getGeneratingTime()));
-            meassureGroup.setAvgTimeTaken(time);
-            sum = sum.add(new BigInteger("" + time));
-            meassureGroup.addTimeMinMax(time);
 
         }
 
-        sum = sum.divide(new BigInteger(""+calls.intValue()));
+        sumNetwork = sumNetwork.divide(new BigInteger(""+calls.intValue()));
+        sumTest = sumTest.divide(new BigInteger(""+calls.intValue()));
+        networkMeassure.setAvgTimeTaken(sumNetwork.longValue());
+        generationMeassure.setAvgTimeTaken(sumTest.longValue());
 
-        meassureGroup.setAvgTimeTaken(sum.longValue());
-
-        return meassureGroup;
+        meassureGroups.put("network",networkMeassure);
+        meassureGroups.put("generationMessage",generationMeassure);
+        return meassureGroups;
     }
 }
