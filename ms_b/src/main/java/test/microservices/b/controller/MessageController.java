@@ -18,6 +18,7 @@ public class MessageController {
 
     private final AtomicLong counter = new AtomicLong();
 
+    private long count;
 
     @RequestMapping(
             method= RequestMethod.GET,
@@ -25,7 +26,7 @@ public class MessageController {
     )
     @ResponseStatus(HttpStatus.OK)
     public Message simpleMessage(@RequestParam(value="lines", required=false, defaultValue="1") String lines) {
-        System.out.println("MessageController.simpleMessage(" + lines + ")");
+        System.out.println((++count) + ". MessageController.simpleMessage(" + lines + ")");
         System.out.println("lines: " + lines);
 
         int count = Integer.parseInt(lines);
@@ -49,7 +50,7 @@ public class MessageController {
     )
     @ResponseStatus(HttpStatus.OK)
     public Message longMessage(@RequestParam(value="lines", required=false, defaultValue="1000") String lines) {
-        System.out.println("MessageController.longMessage(" + lines + ")");
+        System.out.println((++count) + ". MessageController.longMessage(" + lines + ")");
         System.out.println("lines: " + lines);
 
         int count = Integer.parseInt(lines);
@@ -76,7 +77,7 @@ public class MessageController {
         long start,time;
         start = System.nanoTime();
         MessageMetric messageMetric = new MessageMetric();
-        System.out.println("MessageController.longMetricMessage(" + lines + ")");
+        System.out.println((++count) + ". MessageController.longMetricMessage(" + lines + ")");
         System.out.println("lines: " + lines);
 
         int count = Integer.parseInt(lines);

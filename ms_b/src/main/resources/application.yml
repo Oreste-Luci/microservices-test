@@ -17,7 +17,8 @@ eureka:
     serviceUrl:
       defaultZone: http://10.1.7.210:8761/eureka/
   instance:
-    leaseRenewalIntervalInSeconds: 10
+    leaseRenewalIntervalInSeconds: 5
+    leaseExpirationDurationInSeconds: 5
     preferIpAddress: true
     metadataMap:
       hostname: ${vcap.application.application_uris[0]}
