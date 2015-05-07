@@ -23,8 +23,20 @@
                 <!-- Default panel contents -->
                 <div class="panel-heading">Available Endpoints</div>
                 <ul class="list-group">
+                    <li class="list-group-item"><a href="/home.jsp">Home page</a></li>
                     <li class="list-group-item"><a href="/clientmetrics">Client Metrics</a></li>
-                    <li class="list-group-item"><a href="/networkmetrics">Network Metrics</a></li>
+                    <li class="list-group-item">
+
+                        <form class="form-inline" role="form" action="/networkmetrics/longMessageFeign" method="get">
+                            <div class="form-group">
+                                <label for="calls">Long Message Call to MS B (Ribbon): (/networkmetrics/longMessageBalancer)</label>
+                                <input type="text" name="calls" class="form-control" id="calls" placeholder="Enter amount of calls to B">
+                                <input type="text" name="lines" class="form-control" id="longMessageBalancer" placeholder="Enter amount of lines">
+                            </div>
+                            <button type="submit" class="btn btn-default">Submit</button>
+                        </form>
+                    </li>
+
                 </ul>
             </div>
 

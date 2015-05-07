@@ -21,7 +21,6 @@ import java.util.List;
 /**
  * @author Oreste Luci
  */
-@Component
 @Service
 @EnableFeignClients
 public class MessageService {

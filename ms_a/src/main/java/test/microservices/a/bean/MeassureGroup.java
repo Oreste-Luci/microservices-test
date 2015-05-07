@@ -49,4 +49,30 @@ public class MeassureGroup {
     public void setMaxTimeTaken(long maxTimeTaken) {
         this.maxTimeTaken = maxTimeTaken;
     }
+
+
+    public void addTimeMinMax(final long time)
+    {
+        if( this.getMinTimeTaken() > time)
+        {
+            this.setMinTimeTaken(time);
+        }
+
+        if( this.getMaxTimeTaken() < time)
+        {
+            this.setMaxTimeTaken(time);
+        }
+    }
+
+
+    @Override
+    public String toString() {
+        return "MeassureGroup{" +
+                "calls=" + calls +
+                ", lines=" + lines +
+                ", avgTimeTaken=" + avgTimeTaken +
+                ", minTimeTaken=" + minTimeTaken +
+                ", maxTimeTaken=" + maxTimeTaken +
+                '}';
+    }
 }
