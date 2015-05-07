@@ -11,6 +11,8 @@ eureka:
     fetchRegistry: false
   server:
     enableSelfPreservation: false
+    retentionTimeInMSInDeltaQueue: 0
+    deltaRetentionTimerIntervalInMs : 10
     waitTimeInMsWhenSyncEmpty: 0
   instance:
     preferIpAddress: true

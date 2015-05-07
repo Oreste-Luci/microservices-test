@@ -17,11 +17,18 @@ import java.math.BigInteger;
  * @author Oreste Luci
  */
 @Controller
-@RequestMapping("/ms-a")
+@RequestMapping("/clientmetrics")
 public class MessageController {
 
     @Autowired
     MessageService messageService;
+
+
+
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    public String clientmetrics() {
+        return "clientmetrics";
+    }
 
     @RequestMapping(
             method= RequestMethod.GET,
@@ -193,51 +200,7 @@ public class MessageController {
     }
 
 
-    @RequestMapping(
-            method= RequestMethod.GET,
-            value = "/longMessageTransferFeign",
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
-    @ResponseStatus(HttpStatus.OK)
-    public @ResponseBody
-    MeassureGroup longMessageTransferFeign(@RequestParam(value="calls", required=false, defaultValue="100") Integer calls,
-                              @RequestParam(value="lines", required=false, defaultValue="1000") Integer lines) {
 
-        System.out.println("MessageController.longMessageTransferFeign(" + calls + "," + lines + ")");
-
-        MeassureGroup meassureGroup = new MeassureGroup();
-        meassureGroup.setCalls(calls);
-        meassureGroup.setLines(lines);
-
-        String libesStr = "" + lines;
-
-        BigInteger sum = BigInteger.ZERO;
-        long start,time;
-        for (int i=0;i<calls.intValue();i++) {
-
-            start = System.nanoTime();
-            MessageMetric messageMetric = messageService.longMessageTransferFeign(libesStr);
-            time = System.nanoTime() - start - messageMetric.getGeneratingTime() ;
-
-            meassureGroup.setAvgTimeTaken(time);
-            sum = sum.add(new BigInteger("" + time));
-            if( meassureGroup.getMinTimeTaken() > time)
-            {
-                meassureGroup.setMinTimeTaken(time);
-            }
-
-            if( meassureGroup.getMaxTimeTaken() < time)
-            {
-                meassureGroup.setMaxTimeTaken(time);
-            }
-        }
-
-        sum = sum.divide(new BigInteger(""+calls.intValue()));
-
-        meassureGroup.setAvgTimeTaken(sum.longValue());
-
-        return meassureGroup;
-    }
 
 
 
