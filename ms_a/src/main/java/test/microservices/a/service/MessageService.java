@@ -43,13 +43,9 @@ public class MessageService {
 
     public Message direct(String server, String port,String lines) {
 
-        System.out.println("MessageService.direct: Sending to MS B: " + lines);
-
         RestTemplate restTemplate = new RestTemplate();
 
         String callURI = "http://" + server + ":" + port + "/" + MessageService.SERVICE_B_PATH + "?lines=" + lines;
-
-        System.out.println("callURI: " + callURI);
 
         Message message = restTemplate.getForObject(callURI, Message.class);
 
@@ -59,11 +55,7 @@ public class MessageService {
 
     public Message eurkaDirect(String lines) {
 
-        System.out.println("MessageService.eurkaDirect: Sending to MS B: " + lines);
-
         List<ServiceInstance> messageServices = springDiscoveryClient.getInstances(MessageService.SERVICE_APP);
-
-        System.out.println("Instances obtained: " + messageServices.size());
 
         for (ServiceInstance instance : messageServices) {
             System.out.println(instance.getServiceId());
@@ -75,8 +67,6 @@ public class MessageService {
 
         String callURI = "http://" + serviceInstance.getHost() + ":" + serviceInstance.getPort() + "/" + MessageService.SERVICE_B_PATH + "?lines=" + lines;
 
-        System.out.println("callURI: " + callURI);
-
         Message message = restTemplate.getForObject(callURI, Message.class);
 
         return message;
@@ -85,15 +75,11 @@ public class MessageService {
 
     public Message eurekaNextServer(String lines) {
 
-        System.out.println("MessageService.eurekaNextServer: Sending to MS B: " + lines);
-
         InstanceInfo instance = netFlixDiscoveryClient.getNextServerFromEureka(MessageService.SERVICE_APP, false);
 
         RestTemplate restTemplate = new RestTemplate();
 
         String callURI = instance.getHomePageUrl() + "/" + MessageService.SERVICE_B_PATH + "?lines=" + lines;
-
-        System.out.println("callURI: " + callURI);
 
         Message message = restTemplate.getForObject(callURI, Message.class);
 
@@ -102,16 +88,11 @@ public class MessageService {
 
 
     public Message useLoadBalancer(String lines) {
-
-        System.out.println("MessageService.useLoadBalancer: Sending to MS B: " + lines);
-
         ServiceInstance instance = loadBalancer.choose(MessageService.SERVICE_APP);
 
         URI serviceURI = instance.getUri();
 
         String url = serviceURI.toString() + MessageService.SERVICE_B_PATH + "?name=" + lines;
-
-        System.out.println("callURI: " + url);
 
         RestTemplate restTemplate = new RestTemplate();
 
@@ -122,16 +103,11 @@ public class MessageService {
 
     public Message longMessageBalancer(String lines) {
 
-        System.out.println("MessageService.longMessageBalancer(" + lines + ")");
-
         ServiceInstance instance = loadBalancer.choose(MessageService.SERVICE_APP);
 
         URI serviceURI = instance.getUri();
 
         StringBuilder url = new StringBuilder(serviceURI.toString()).append(MessageService.SERVICE_B_PATH).append("/longMessage?lines=").append(lines);
-        //String url = serviceURI.toString() + MessageService.SERVICE_B_PATH + "/longMessage?lines=" + lines;
-
-        System.out.println("callURI: " + url.toString());
 
         RestTemplate restTemplate = new RestTemplate();
 
@@ -141,20 +117,15 @@ public class MessageService {
     }
 
     public Message feign(String lines) {
-        System.out.println("MessageService.feign: Sending to MS B: " + lines);
-        return microserviceB.getMessage(lines);
+       return microserviceB.getMessage(lines);
     }
 
 
     public Message longMessageFeign(String lines) {
-        System.out.println("MessageService.longMessageFeign: Sending to MS B: " + lines);
-        return microserviceB.getLongMessage(lines);
+       return microserviceB.getLongMessage(lines);
     }
 
-    public MessageMetric longMessageTransferFeign(String lines) {
-        System.out.println("MessageService.longMessageTransferFeign: Sending to MS B: " + lines);
-        return microserviceB.getMessageMetric(lines);
-    }
+
 
 
     @FeignClient(value = MessageService.SERVICE_APP)
@@ -165,8 +136,5 @@ public class MessageService {
 
         @RequestMapping(value = "/" + MessageService.SERVICE_B_PATH + "/longMessage?lines={lines}", method = RequestMethod.GET)
         Message getLongMessage(@PathVariable(value = "lines") String lines);
-
-        @RequestMapping(value = "/" + MessageService.SERVICE_B_PATH + "/longMetricMessage?lines={lines}", method = RequestMethod.GET)
-        MessageMetric getMessageMetric(@PathVariable(value = "lines") String lines);
     }
 }
