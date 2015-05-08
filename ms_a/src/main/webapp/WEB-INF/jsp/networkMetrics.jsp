@@ -26,12 +26,32 @@
                     <li class="list-group-item"><a href="/home">Home page</a></li>
                     <li class="list-group-item"><a href="/clientmetrics">Client Metrics</a></li>
                     <li class="list-group-item">
-
-                        <form class="form-inline" role="form" action="/networkmetrics/longMessageFeign" method="get">
+                        <form class="form-inline" role="form" action="/networkmetrics/eurekaNextServer" method="get">
                             <div class="form-group">
-                                <label for="calls">Long Message Call to MS B (Ribbon): (/networkmetrics/longMessageBalancer)</label>
-                                <input type="text" name="calls" class="form-control" id="calls" placeholder="Enter amount of calls to B">
+                                <label for="calls0">Get MS B Next Server from Eureka: (/networkmetrics/eurekaNextServer)</label>
+                                <input type="text" name="calls" class="form-control" id="calls0" placeholder="Enter amount of calls to B">
+                                <input type="text" name="lines" class="form-control" id="eurekaNextServer" placeholder="Enter amount of lines">
+                            </div>
+                            <button type="submit" class="btn btn-default">Submit</button>
+                        </form>
+                    </li>
+                    <li class="list-group-item">
+                        <form class="form-inline" role="form" action="/networkmetrics/useLoadBalancer" method="get">
+                            <div class="form-group">
+                                <label for="calls2">Long Message Call to MS B (Ribbon): (/networkmetrics/useLoadBalancer)</label>
+                                <input type="text" name="calls" class="form-control" id="calls2" placeholder="Enter amount of calls to B">
                                 <input type="text" name="lines" class="form-control" id="longMessageBalancer" placeholder="Enter amount of lines">
+                            </div>
+                            <button type="submit" class="btn btn-default">Submit</button>
+                        </form>
+                    </li>
+                    <li class="list-group-item">
+
+                        <form class="form-inline" role="form" action="/networkmetrics/feign" method="get">
+                            <div class="form-group">
+                                <label for="calls3">Long Message Call to MS B (Ribbon): (/networkmetrics/feign)</label>
+                                <input type="text" name="calls" class="form-control" id="calls3" placeholder="Enter amount of calls to B">
+                                <input type="text" name="lines" class="form-control" id="feign" placeholder="Enter amount of lines">
                             </div>
                             <button type="submit" class="btn btn-default">Submit</button>
                         </form>
