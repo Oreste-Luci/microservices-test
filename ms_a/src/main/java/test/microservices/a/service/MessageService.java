@@ -17,6 +17,7 @@ import test.microservices.a.bean.MessageMetric;
 
 import java.net.URI;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * @author Oreste Luci
@@ -27,6 +28,8 @@ public class MessageService {
 
     private static final String SERVICE_APP = "MS-TEST-B";
     private static final String SERVICE_B_PATH = "ms-b";
+
+    private final AtomicLong counter = new AtomicLong(1);
 
     @Autowired
     MicroserviceB microserviceB;
@@ -43,7 +46,7 @@ public class MessageService {
 
     public Message direct(String server, String port,String lines) {
 
-        System.out.println("MessageService.direct: Sending to MS B: " + lines);
+        System.out.println(counter.incrementAndGet() + ". MessageService.direct: Sending to MS B: " + lines);
 
         RestTemplate restTemplate = new RestTemplate();
 
@@ -59,7 +62,7 @@ public class MessageService {
 
     public Message eurkaDirect(String lines) {
 
-        System.out.println("MessageService.eurkaDirect: Sending to MS B: " + lines);
+        System.out.println(counter.incrementAndGet() + ". MessageService.eurkaDirect: Sending to MS B: " + lines);
 
         List<ServiceInstance> messageServices = springDiscoveryClient.getInstances(MessageService.SERVICE_APP);
 
@@ -85,7 +88,7 @@ public class MessageService {
 
     public Message eurekaNextServer(String lines) {
 
-        System.out.println("MessageService.eurekaNextServer: Sending to MS B: " + lines);
+        System.out.println(counter.incrementAndGet() + ". MessageService.eurekaNextServer: Sending to MS B: " + lines);
 
         InstanceInfo instance = netFlixDiscoveryClient.getNextServerFromEureka(MessageService.SERVICE_APP, false);
 
@@ -103,7 +106,7 @@ public class MessageService {
 
     public Message useLoadBalancer(String lines) {
 
-        System.out.println("MessageService.useLoadBalancer: Sending to MS B: " + lines);
+        System.out.println(counter.incrementAndGet() + ". MessageService.useLoadBalancer: Sending to MS B: " + lines);
 
         ServiceInstance instance = loadBalancer.choose(MessageService.SERVICE_APP);
 
@@ -122,7 +125,7 @@ public class MessageService {
 
     public Message longMessageBalancer(String lines) {
 
-        System.out.println("MessageService.longMessageBalancer(" + lines + ")");
+        System.out.println(counter.incrementAndGet() + ". MessageService.longMessageBalancer(" + lines + ")");
 
         ServiceInstance instance = loadBalancer.choose(MessageService.SERVICE_APP);
 
@@ -141,18 +144,18 @@ public class MessageService {
     }
 
     public Message feign(String lines) {
-        System.out.println("MessageService.feign: Sending to MS B: " + lines);
+        System.out.println(counter.incrementAndGet() + ". MessageService.feign: Sending to MS B: " + lines);
         return microserviceB.getMessage(lines);
     }
 
 
     public Message longMessageFeign(String lines) {
-        System.out.println("MessageService.longMessageFeign: Sending to MS B: " + lines);
+        System.out.println(counter.incrementAndGet() + ". MessageService.longMessageFeign: Sending to MS B: " + lines);
         return microserviceB.getLongMessage(lines);
     }
 
     public MessageMetric longMessageTransferFeign(String lines) {
-        System.out.println("MessageService.longMessageTransferFeign: Sending to MS B: " + lines);
+        System.out.println(counter.incrementAndGet() + ". MessageService.longMessageTransferFeign: Sending to MS B: " + lines);
         return microserviceB.getMessageMetric(lines);
     }
 
