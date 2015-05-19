@@ -6,7 +6,10 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import test.microservices.a.bean.MeassureGroups;
+import test.microservices.a.bean.MessageMetric;
+import test.microservices.a.bean.protos.MessageMetricProtos;
 import test.microservices.a.service.MessageService;
+import test.microservices.a.service.NetworkProtosService;
 import test.microservices.a.service.NetworkService;
 
 /**
@@ -14,32 +17,47 @@ import test.microservices.a.service.NetworkService;
  */
 
 @Controller
-@RequestMapping("/networkmetrics")
-public class NetworkMetricsController {
+@RequestMapping("/networkprotosmetrics")
+public class NetworkProtosMetricsController {
+
 
     @Autowired
-    NetworkService netweorkService;
+    NetworkProtosService networkProtosService;
+
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public String networkmetrics() {
-        return "networkmetrics";
+    public String networkprotosmetrics() {
+        return "networkprotosmetrics";
+    }
+
+    @RequestMapping(
+            method= RequestMethod.GET,
+            value = "/feignproto",
+            produces = "application/x-protobuf"
+    )
+    @ResponseStatus(HttpStatus.OK)
+    public @ResponseBody
+    MessageMetricProtos.MessageMetric feignProtos(@RequestParam(value="calls", required=false, defaultValue="100") Integer calls,
+                                           @RequestParam(value="lines", required=false, defaultValue="1000") Integer lines) {
+        return networkProtosService.longMessageTransferFeign(calls, lines);
     }
 
     @RequestMapping(
             method= RequestMethod.GET,
             value = "/feign",
-            produces = MediaType.APPLICATION_JSON_VALUE
+            produces =  MediaType.APPLICATION_JSON_VALUE
     )
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody
     MeassureGroups feign(@RequestParam(value="calls", required=false, defaultValue="100") Integer calls,
-                                           @RequestParam(value="lines", required=false, defaultValue="1000") Integer lines) {
-
-        return netweorkService.genericSender(calls, lines,
-                netweorkService -> {
-                    return netweorkService.longMessageTransferFeign(lines);
+                                            @RequestParam(value="lines", required=false, defaultValue="1000") Integer lines) {
+        return networkProtosService.genericSender(calls, lines,
+                netweorkProtosService -> {
+                    return networkProtosService.longMessageTransferFeign(lines);
                 });
     }
+
+
 
 
     @RequestMapping(
@@ -55,9 +73,9 @@ public class NetworkMetricsController {
             @RequestParam(value="calls", required=false, defaultValue="100") Integer calls,
                                             @RequestParam(value="lines", required=false, defaultValue="1000") Integer lines) {
 
-        return netweorkService.genericSender(calls, lines,
-                netweorkService -> {
-                    return netweorkService.direct(server, port, lines);
+        return networkProtosService.genericSender(calls, lines,
+                netweorkProtosService -> {
+                    return networkProtosService.direct(server, port, lines);
                 });
     }
 
@@ -71,9 +89,9 @@ public class NetworkMetricsController {
     MeassureGroups eurekaNextServer(@RequestParam(value="calls", required=false, defaultValue="100") Integer calls,
                                             @RequestParam(value="lines", required=false, defaultValue="1000") Integer lines) {
 
-        return netweorkService.genericSender(calls, lines,
+        return networkProtosService.genericSender(calls, lines,
                 netweorkService -> {
-                    return netweorkService.eurekaNextServer(lines);
+                    return networkProtosService.eurekaNextServer(lines);
                 });
     }
 
@@ -81,15 +99,16 @@ public class NetworkMetricsController {
             method= RequestMethod.GET,
             value = "/useLoadBalancer",
             produces = MediaType.APPLICATION_JSON_VALUE
+
     )
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody
     MeassureGroups useLoadBalancer(@RequestParam(value="calls", required=false, defaultValue="100") Integer calls,
                                             @RequestParam(value="lines", required=false, defaultValue="1000") Integer lines) {
 
-        return netweorkService.genericSender(calls, lines,
-                netweorkService -> {
-                    return netweorkService.useLoadBalancer(lines);
+        return networkProtosService.genericSender(calls, lines,
+                networkProtosService -> {
+                    return networkProtosService.useLoadBalancer(lines);
                 });
     }
 
@@ -98,15 +117,16 @@ public class NetworkMetricsController {
             method= RequestMethod.GET,
             value = "/eurkaDirect",
             produces = MediaType.APPLICATION_JSON_VALUE
+
     )
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody
     MeassureGroups eurkaDirect(@RequestParam(value="calls", required=false, defaultValue="100") Integer calls,
                                             @RequestParam(value="lines", required=false, defaultValue="1000") Integer lines) {
 
-        return netweorkService.genericSender(calls, lines,
+        return networkProtosService.genericSender(calls, lines,
                 netweorkService -> {
-                    return netweorkService.eurkaDirect(lines);
+                    return networkProtosService.eurkaDirect(lines);
                 });
     }
 

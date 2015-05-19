@@ -1,0 +1,14 @@
+package test.microservices.b.bean;
+
+option java_package = "test.microservices.a.bean.protos";
+option java_outer_classname = "MessageMetricProtos";
+
+message MessageMetric {
+    required Message messages = 1;
+    required int64 generatingTime = 2;
+
+    message Message {
+        required int64 id = 1;
+        optional string content = 2;
+    }
+}

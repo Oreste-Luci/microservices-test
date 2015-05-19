@@ -26,6 +26,7 @@
                 <ul class="list-group">
                     <li class="list-group-item"><a href="/home">Home page</a></li>
                     <li class="list-group-item"><a href="/networkmetrics">Network Metrics</a></li>
+                    <li class="list-group-item"><a href="/networkprotosmetrics">Network protos Metrics</a></li>
                     <li class="list-group-item"><a href="/clientmetrics/test">Microservice A Test Method</a> (/clientmetrics/test)</li>
                     <li class="list-group-item"><a href="/clientmetrics/directEureka">Get MS B List Directly from Eureka</a> (/clientmetrics/directEureka)</li>
                     <li class="list-group-item"><a href="/clientmetrics/loadBalancer">Get MS B From Load Balancer (Ribbon)</a> (/clientmetrics/loadBalancer)</li>

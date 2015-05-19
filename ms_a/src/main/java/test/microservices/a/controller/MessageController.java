@@ -199,11 +199,6 @@ public class MessageController {
         return meassure;
     }
 
-
-
-
-
-
     @RequestMapping(
             method= RequestMethod.GET,
             value = "/test",

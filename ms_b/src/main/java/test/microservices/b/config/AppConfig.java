@@ -5,6 +5,7 @@ import org.springframework.boot.context.embedded.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
+import org.springframework.http.converter.protobuf.ProtobufHttpMessageConverter;
 
 import javax.servlet.Filter;
 
@@ -22,4 +23,11 @@ public class AppConfig {
         javaMelodyFilterBean.addUrlPatterns("/*");
         return javaMelodyFilterBean;
     }
+
+
+    @Bean
+    ProtobufHttpMessageConverter protobufHttpMessageConverter() {
+        return new ProtobufHttpMessageConverter();
+    }
+
 }

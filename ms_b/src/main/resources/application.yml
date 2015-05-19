@@ -33,6 +33,22 @@ eureka:
       defaultZone: http://10.1.7.210:8761/eureka/
 
 ---
+
+
+---
+spring:
+  profiles: aws-gz
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://10.1.7.210:8761/eureka/
+server:
+ tomcat:
+      compression: on
+      compressableMimeTypes: application/json,application/x-protobuf
+
+---
+
 spring:
   profiles: local
 eureka:

@@ -25,6 +25,7 @@
                 <ul class="list-group">
                     <li class="list-group-item"><a href="/clientmetrics">Client Metrics</a></li>
                     <li class="list-group-item"><a href="/networkmetrics">Network Metrics</a></li>
+                    <li class="list-group-item"><a href="/networkprotosmetrics">Network protos Metrics</a></li>
                 </ul>
             </div>
 
