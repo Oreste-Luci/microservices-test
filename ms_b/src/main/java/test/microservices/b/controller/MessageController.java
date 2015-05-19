@@ -99,8 +99,8 @@ public class MessageController {
 
     @RequestMapping(
             method= RequestMethod.GET,
-            value = "/longMetricProtoMessage")
-            //produces = "application/x-protobuf "+MediaType.APPLICATION_JSON_VALUE)
+            value = "/longMetricProtoMessage",
+            produces = {"application/x-protobuf" , MediaType.APPLICATION_JSON_VALUE})
     @ResponseStatus(HttpStatus.OK)
     public MessageMetricProtos.MessageMetric longMetricProtoMessage(@RequestParam(value="lines", required=false, defaultValue="1000") String lines) {
         long start,time;

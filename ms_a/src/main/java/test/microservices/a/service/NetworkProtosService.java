@@ -191,7 +191,7 @@ public class NetworkProtosService {
     public interface MicroserviceB {
 
         @RequestMapping(value = "/" + NetworkProtosService.SERVICE_B_PATH + "/longMetricProtoMessage?lines={lines}", method = RequestMethod.GET,
-                consumes =   "application/x-protobuf "+ MediaType.APPLICATION_JSON_VALUE)
+                consumes = {  "application/x-protobuf", MediaType.APPLICATION_JSON_VALUE})
         MessageMetricProtos.MessageMetric getMessageMetric(@PathVariable(value = "lines") String lines);
     }
 
